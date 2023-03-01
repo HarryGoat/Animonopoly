@@ -4,7 +4,6 @@ public class Player {
     private String name;
     private int money = 1500;
     private int location = 0;
-    private int status;
     private int miss_turn = 0;
 
     public void setPiece(String piece) {
@@ -44,14 +43,6 @@ public class Player {
         this.location = location;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
     public int getMiss_turn() {
         return miss_turn;
     }
@@ -68,9 +59,19 @@ public class Player {
         }
     }
 
+    public void isBankrupt (int number_of_players){
+        if (this.money <= 0)
+        {
+            number_of_players -= 1;
+        }
+    }
+
     public void addMoney(int moneyToAdd){
         this.money += moneyToAdd;
+
+    }
+
+    public void takeMoney(int payment){
+        this.money -= payment;
     }
 }
-
-
