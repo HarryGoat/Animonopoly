@@ -1,39 +1,29 @@
 import java.util.Scanner;
-
 public class Game {
-
     private int number_of_players;
     private Player[] players;
-    private GUI gui = new GUI();
-
     public Game() {
-
     }
-
     public void make_player() {
-
-
-        gui.number_of_players ();
-        number_of_players = gui.number_of_players;
-
+        System.out.println("Welcome to animonopoly!\n");
+        do {
+            Scanner players = new Scanner(System.in);
+            System.out.println("How many players? 2-4: ");
+            number_of_players = players.nextInt();
+        } while (number_of_players < 2 || number_of_players > 4);
         players = new Player[number_of_players];
-
-
-
         String[] pieces = {"!", "?", "$", "%"};
         int[] pieces_val = {1, 1, 1, 1};
 
         for (int i = 0; i < number_of_players; i++) {
-
             System.out.println("Hello player " + (i + 1) + " What is your name?: ");
             Scanner nameScanner = new Scanner(System.in);
             String chosenName = nameScanner.nextLine();
-
             Scanner pieceScanner = new Scanner(System.in);
             System.out.println("Please select a piece:");
 
-
             int x;
+
             for (x = 0; x <= pieces.length - 1; x++) {
                 if (pieces_val[x] == 1) {
                     System.out.println((x + 1) + " = " + pieces[x] + "\n");
@@ -41,12 +31,12 @@ public class Game {
             }
 
             int chosenPieceIndex;
+
             do {
                 chosenPieceIndex = pieceScanner.nextInt();
             } while (chosenPieceIndex < 1 || chosenPieceIndex > 4 || pieces_val[chosenPieceIndex - 1] == 0);
 
             players[i] = new Player(pieces[chosenPieceIndex - 1], chosenName);
-
             pieces_val[chosenPieceIndex - 1] = 0;
         }
     }
