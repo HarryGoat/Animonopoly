@@ -7,7 +7,7 @@ public class Game {
     private GUI gui = new GUI();
 
     public Game() {
-
+//lol
     }
 
     public void make_player() {
