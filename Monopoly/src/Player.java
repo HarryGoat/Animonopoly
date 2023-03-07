@@ -1,31 +1,25 @@
+import javax.swing.*;
+
 public class Player {
 
-    private String piece;
-    private String name;
+    private JLabel piece;
+    private JLabel playerName;
     private int money = 1500;
     private int location = 0;
     private int miss_turn = 0;
 
-    public void setPiece(String piece) {
-        this.piece = piece;
-    }
+
 
     public void setName(String name) {
-        this.name = name;
+        this.playerName = new JLabel(name);
+        playerName.setBounds(10,20,80,25);
     }
 
-    public Player(String piece, String name) {
-        this.piece = piece;
-        this.name = name;
+    public void getName(JPanel panel)
+    {
+        panel.add(this.playerName);
     }
 
-    public String getPiece() {
-        return piece;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     public int getMoney() {
         return money;

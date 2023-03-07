@@ -4,6 +4,7 @@ public class Game {
 
     private int number_of_players;
     private Player[] players;
+    private GUI gui = new GUI();
 
     public Game() {
 
@@ -11,16 +12,13 @@ public class Game {
 
     public void make_player() {
 
-        System.out.println("Welcome to animonopoly!\n");
 
-        do {
-            Scanner players = new Scanner(System.in);
-            System.out.println("How many players? 2-4: ");
-            number_of_players = players.nextInt();
-
-        } while (number_of_players < 2 || number_of_players > 4);
+        gui.number_of_players ();
+        number_of_players = gui.number_of_players;
 
         players = new Player[number_of_players];
+
+
 
         String[] pieces = {"!", "?", "$", "%"};
         int[] pieces_val = {1, 1, 1, 1};
@@ -73,7 +71,10 @@ public class Game {
 
                 if (dice.getDice1() != dice.getDice2()) {
                     System.out.println("You rolled a " + dice.getDice1() + " and a " + dice.getDice2() + "!\n");
-                } else {
+                }
+
+                else
+                {
                     System.out.println("You rolled a double " + dice.getDice1() + "!\n");
 
                     int drawCardChoice;
@@ -88,12 +89,14 @@ public class Game {
                     } while (drawCardChoice != 1 && drawCardChoice != 2);
 
 
-                    if (drawCardChoice == 1) {
+                    if (drawCardChoice == 1)
+                    {
                         int scenarioIndex = (int) ((Math.random() * 22) - 1);
 
                         int cardMoney = cards.getCard(scenarioIndex);
 
-                        if (scenarioIndex < 10) {
+                        if (scenarioIndex < 10)
+                        {
                             currentPlayer.addMoney(cardMoney);
                         } else {
                             currentPlayer.takeMoney(cardMoney);
