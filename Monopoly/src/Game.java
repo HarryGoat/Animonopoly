@@ -109,13 +109,19 @@ public class Game {
                 }
 
                 //what happens when land on go
-                if (location == 0) {
+                else if (location == 0) {
                     currentPlayer.addMoney(1000);
                 }
 
                 //what happens when pass go
                 else if ((location - previous_location) < 0) {
                     currentPlayer.addMoney(500);
+                }
+
+
+                //what happens when player lands on an animal
+                else{
+
                 }
 
                 currentPlayer.isBankrupt(number_of_players);

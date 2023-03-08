@@ -66,4 +66,8 @@ public class Player {
 
     public void setMissTurn(int i) {
     }
+
+    public void purchaseAnimal(){
+
+    }
 }
