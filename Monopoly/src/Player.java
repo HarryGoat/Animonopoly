@@ -59,4 +59,11 @@ public class Player {
     public void takeMoney(int payment){
         this.money -= payment;
     }
+
+    public int getMissTurn() {
+        return 0;
+    }
+
+    public void setMissTurn(int i) {
+    }
 }
