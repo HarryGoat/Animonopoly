@@ -4,13 +4,12 @@ public class Player {
     private int money = 1500;
     private int location = 0;
     private int miss_turn = 0;
+    private int playerStillIn = 1;
 
-    public void setPiece(String piece) {
-        this.piece = piece;
+    public int getPlayerStillIn(){
+        return playerStillIn;
     }
-    public void setName(String name) {
-        this.name = name;
-    }
+
     public Player(String piece, String name) {
         this.piece = piece;
         this.name = name;
@@ -24,14 +23,9 @@ public class Player {
     public int getMoney() {
         return money;
     }
-    public void setMoney(int money) {
-        this.money = money;
-    }
+
     public int getLocation() {
         return location;
-    }
-    public void setLocation(int location) {
-        this.location = location;
     }
     public int getMiss_turn() {
         return miss_turn;
@@ -45,11 +39,15 @@ public class Player {
             this.location -= 26;
         }
     }
-    public void isBankrupt (int number_of_players){
+    public int isBankrupt (int number_of_players){
         if (this.money <= 0)
         {
             number_of_players -= 1;
+            System.out.println(this.name + " you have run out of money :( You are out!\n");
+            this.playerStillIn = 0;
         }
+
+        return number_of_players;
     }
 
     public void addMoney(int moneyToAdd){
@@ -60,14 +58,7 @@ public class Player {
         this.money -= payment;
     }
 
-    public int getMissTurn() {
-        return 0;
-    }
 
-    public void setMissTurn(int i) {
-    }
 
-    public void purchaseAnimal(){
 
-    }
 }

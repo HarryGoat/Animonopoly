@@ -1,9 +1,20 @@
 import java.util.Scanner;
+import java.awt.event.*;
+
+
 public class Game {
     private int number_of_players;
-    private Player[] players;
-    public Game() {
+    public Player[] players;
+    int player_turn = 0;
+    int animalArray;
+    Animals animals = new Animals();
+    Player currentPlayer;
+
+    public Player[] getPlayers() {
+        return players;
     }
+
+
     public void make_player() {
         System.out.println("Welcome to animonopoly!\n");
         do {
@@ -44,15 +55,14 @@ public class Game {
     public void player_turn() {
 
 
-        int player_turn = 0;
         int previous_location;
         Dice dice = new Dice();
         Cards cards = new Cards();
 
         do {
-            Player currentPlayer = players[player_turn];
+            currentPlayer = players[player_turn];
 
-            if (currentPlayer.getMiss_turn() == 0) {
+            if (currentPlayer.getMiss_turn() == 0 && currentPlayer.getPlayerStillIn() == 1) {
 
                 System.out.println("Hello " + currentPlayer.getName() + "! It is your turn :)");
 
@@ -61,10 +71,7 @@ public class Game {
 
                 if (dice.getDice1() != dice.getDice2()) {
                     System.out.println("You rolled a " + dice.getDice1() + " and a " + dice.getDice2() + "!\n");
-                }
-
-                else
-                {
+                } else {
                     System.out.println("You rolled a double " + dice.getDice1() + "!\n");
 
                     int drawCardChoice;
@@ -79,14 +86,12 @@ public class Game {
                     } while (drawCardChoice != 1 && drawCardChoice != 2);
 
 
-                    if (drawCardChoice == 1)
-                    {
-                        int scenarioIndex = (int) ((Math.random() * 22) - 1);
+                    if (drawCardChoice == 1) {
+                        int scenarioIndex = (int) ((Math.random() * 20));
 
                         int cardMoney = cards.getCard(scenarioIndex);
 
-                        if (scenarioIndex < 10)
-                        {
+                        if (scenarioIndex < 10) {
                             currentPlayer.addMoney(cardMoney);
                         } else {
                             currentPlayer.takeMoney(cardMoney);
@@ -109,27 +114,37 @@ public class Game {
                 }
 
                 //what happens when land on go
-                else if (location == 0) {
-                    currentPlayer.addMoney(1000);
+                if (location == 0) {
+                    currentPlayer.addMoney(400);
                 }
 
                 //what happens when pass go
                 else if ((location - previous_location) < 0) {
-                    currentPlayer.addMoney(500);
+                    currentPlayer.addMoney(200);
                 }
 
 
-                //what happens when player lands on an animal
-                else{
-
+                if (currentPlayer.getLocation() < 13)
+                {
+                    animalArray = currentPlayer.getLocation() - 1;
+                }
+                else if (currentPlayer.getLocation() < 25)
+                {
+                    animalArray = currentPlayer.getLocation() - 2;
                 }
 
-                currentPlayer.isBankrupt(number_of_players);
+
+                if (currentPlayer.getMiss_turn() != 1 && currentPlayer.getLocation() != 0 && currentPlayer.getLocation() != 13) {
+                    animals.landOnAnimal(animalArray, currentPlayer, number_of_players);
+                    playerOptions();
+                }
+
+                number_of_players = currentPlayer.isBankrupt(number_of_players);
             }
 
 
             //player only missed one turn
-            else {
+            else if (currentPlayer.getMiss_turn() == 1 && currentPlayer.getPlayerStillIn() == 1) {
                 System.out.println(currentPlayer.getName() + ", It is your go however you miss a go!\n");
                 currentPlayer.setMiss_turn(0);
             }
@@ -139,5 +154,35 @@ public class Game {
                 player_turn = 0;
             }
         } while (number_of_players != 1);
+
+
+    }
+
+    public void playerOptions() {
+
+        int numberOfProperties = animals.numberOfProperties(currentPlayer);
+        boolean validateMoney = animals.validateMoney(animalArray, currentPlayer);
+
+        if(numberOfProperties > 0 && validateMoney == true) {
+            System.out.println("Options:\n '1' to UPGRADE ANIMAL\n'2' to END TURN");
+
+            int choice;
+            do {
+                Scanner optionsChoice = new Scanner(System.in);
+                choice = optionsChoice.nextInt();
+            } while (choice != 1 && choice != 2);
+
+            if (choice == 1) {
+                animals.upgradeAnimal(currentPlayer);
+            }
+        }
+
+        else
+        {
+            Scanner enter = new Scanner(System.in);
+            System.out.println("Press 'ENTER' to end turn: ");
+            enter.nextLine();
+        }
+
     }
 }
