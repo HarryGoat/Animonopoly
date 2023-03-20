@@ -1,23 +1,25 @@
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Animals {
-    private String owner;
-    private String name;
-    private int price;
-    private int level;
-    private int upgrade;
-    private int L1;
-    private int L2;
-    private int L3;
-    private int L4;
-    private int L5;
-    private int L6;
-    private int rent;
+    public String owner;
+    public String name;
+    public int price;
+    public int level;
+    public int upgrade;
+    public int L1;
+    public int L2;
+    public int L3;
+    public int L4;
+    public int L5;
+    public int L6;
 
-    private Animals[] animal;
-    Game game = new Game();
-    Player[] players = game.getPlayers();
+    public Animals[] animal;
 
+
+    public Animals[] getAnimals(){
+        return animal;
+    }
     public Animals(String name, int price, int level, int upgrade, int L1,int L2, int L3, int L4, int L5, int L6, String owner) {
 
         this.name = name;
@@ -66,92 +68,18 @@ public class Animals {
 
 
     //for buying an animal using player location and charging money
-    public void landOnAnimal (int location, Player player, int numberOfPlayers){
 
-        Animals currentAnimal = animal[location];
-
-        if (currentAnimal.level == 1)
-        {
-            rent = currentAnimal.L1;
-        }
-        else if (currentAnimal.level == 2)
-        {
-            rent = currentAnimal.L2;
-        }
-        else if (currentAnimal.level == 3)
-        {
-            rent = currentAnimal.L3;
-        }
-        else if (currentAnimal.level == 4)
-        {
-            rent = currentAnimal.L4;
-        }
-        else if (currentAnimal.level == 5)
-        {
-            rent = currentAnimal.L5;
-        }
-        else if (currentAnimal.level == 6)
-        {
-            rent = currentAnimal.L6;
-        }
-
-
-        if (currentAnimal.owner == null && player.getMoney() >= animal[location].price) {
-
-            int cost = currentAnimal.price;
-
-            System.out.println("Would you like to purchase this animal for " + cost + "$?: '1' for YES '2' for NO");
-            Scanner purchaseChoice = new Scanner(System.in);
-            int choice;
-
-            do {
-                choice = purchaseChoice.nextInt();
-            }while (choice != 1 && choice != 2);
-
-
-                if (choice == 1) {
-                    currentAnimal.owner = player.getName();
-                    player.takeMoney(currentAnimal.price);
-                    System.out.println(player.getName() + " purchased " + currentAnimal.name + " for " + cost + " dollars.");
-                }
-
-        }
-
-        else if (currentAnimal.owner == null && player.getMoney() < currentAnimal.price)
-        {
-            System.out.println("You landed on " + currentAnimal.name + " which is owned by nobody however you are broke :(");
-        }
-
-        else if (currentAnimal.owner == player.getName())
-        {
-            System.out.println("You landed on your animal: " + currentAnimal.name + "!");
-        }
-
-        else if (currentAnimal.owner != null && currentAnimal.owner != player.getName())
-        {
-            System.out.println("You landed on " + currentAnimal.owner + " animal! You must pay " + currentAnimal.price + "$!");
-            player.takeMoney(rent);
-
-            for (int x = 0; x < numberOfPlayers;x++){
-                if (players[x].getName() == currentAnimal.owner)
-                {
-                    players[x].addMoney(rent);
-                }
-            }
-        }
-
-    }
 
     public void upgradeAnimal(Player player)
     {
-
-        System.out.println("Which animal would you like to upgrade?:");
+        int maxLevel = 6;
+        System.out.println("\nWhich animal would you like to upgrade?\n");
 
         for (int x = 0; x < animal.length; x++)
         {
-            if (animal[x].owner == player.getName() && animal[x].level != 6)
+            if (Objects.equals(animal[x].owner, player.getName()))
             {
-                System.out.println(animal[x].name + " '" + x + "'\n");
+                System.out.println("Animal: " + animal[x].name + " - Cost to upgrade: " + animal[x].upgrade + " - Enter'" + x + "' to Upgrade.");
             }
 
         }
@@ -161,27 +89,26 @@ public class Animals {
 
         do {
             animalArrayNo = animalChoice.nextInt();
-        } while(animal[animalArrayNo].name != player.getName());
+        } while(!Objects.equals(animal[animalArrayNo].owner, player.getName()));
 
-        player.takeMoney(animal[animalArrayNo].upgrade);
-        animal[animalArrayNo].level += 1;
-
-    }
-
-    public int numberOfProperties(Player player)
-    {
-        int numberOfAnimals = 0;
-
-        for (int x = 0; x < animal.length; x++)
-        {
-            if (animal[x].owner == player.getName())
-            {
-                numberOfAnimals += 1;
-            }
-
+        if (animal[animalArrayNo].level != maxLevel){
+            player.takeMoney(animal[animalArrayNo].upgrade);
+            animal[animalArrayNo].level += 1;
+            System.out.println("Congratulations! You upgraded your " + animal[animalArrayNo].name);
         }
-        return numberOfAnimals;
+
+        else if (animal[animalArrayNo].level == (maxLevel - 1)){
+            player.takeMoney(animal[animalArrayNo].upgrade);
+            animal[animalArrayNo].level += 1;
+            System.out.println("Congratulations! You upgraded your " + animal[animalArrayNo].name);
+            player.setNumberOfProperties(-1);
+        }
+
+        else{
+            System.out.println("Sorry, your " + animal[animalArrayNo].name + " is already at its maximum level!");
+        }
     }
+
 
     public boolean validateMoney(int animalArray, Player player)
     {
@@ -192,4 +119,6 @@ public class Animals {
         }
         return validateMoney;
     }
+
+
 }

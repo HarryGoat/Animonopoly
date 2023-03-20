@@ -9,17 +9,15 @@ public class Dice {
 
 
     public int roll() {
-        Cards cards = new Cards();
 
         Scanner myObj = new Scanner(System.in);
-        System.out.println("Press Enter to roll dice.");
+        System.out.println("\nPress Enter to roll dice.");
         myObj.nextLine();
 
         dice1 = (int) ((Math.random() * 5) + 1);
         dice2 = (int) ((Math.random() * 5) + 1);
 
-        int total = dice1 + dice2;
-        return total;
+        return dice1 + dice2;
 
     }
 

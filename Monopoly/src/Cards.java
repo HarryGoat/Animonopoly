@@ -24,31 +24,31 @@ public class Cards {
     };
 
     int [] cardMoney = {
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
+            100,
+            20,
+            50,
+            75,
+            25,
+            30,
+            40,
+            10,
+            15,
+            100,
 
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
-            1,
+            50,
+            20,
+            25,
+            30,
+            75,
+            40,
+            60,
+            100,
+            50,
+            15,
     };
 
     public int getCard(int scenarioIndex){
-        System.out.println(scenarios[scenarioIndex]);
+        System.out.println(scenarios[scenarioIndex] + "\n");
 
         return cardMoney[scenarioIndex];
     }
