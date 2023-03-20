@@ -190,7 +190,7 @@ public class Game {
         for (Player player : players) {
             if (player.getPlayerStillIn()) {
                 System.out.println("\n\n\nCongratulation " + player.getName() + "! You are the last player standing. You have won animonopoly :)");
-
+                System.exit(0);
             }
         }
     }
