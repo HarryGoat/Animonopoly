@@ -46,3 +46,5 @@ public class Board {
         System.out.println(GREEN + out + RESET);
     }
 }
+
+// :]

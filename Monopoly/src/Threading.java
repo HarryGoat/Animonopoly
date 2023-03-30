@@ -5,3 +5,5 @@ public class Threading extends Thread{
         sound.PlayMusic();
     }
 }
+
+// :]

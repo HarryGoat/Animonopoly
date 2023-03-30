@@ -29,3 +29,5 @@ public class Dice {
         return dice2;
     }
 }
+
+// :]
