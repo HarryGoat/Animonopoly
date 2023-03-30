@@ -10,6 +10,7 @@ public class Game {
     int player_turn = 0;
     int animalArray;
     int rent;
+    Sound sound = new Sound();
 
 
     public Game() {
@@ -25,9 +26,10 @@ public class Game {
 
         System.out.println("Welcome to animonopoly!");
         do {
-            Scanner players = new Scanner(System.in);
             System.out.println("\nHow many players? 2-4: ");
-            numberOfPlayers = players.nextInt();
+
+            numberOfPlayers = validateIntegerInput();
+
             if (numberOfPlayers < minPlayers || numberOfPlayers > maxPlayers){
                 System.out.println("\nPlease enter a valid input from 2-4: ");
             }
@@ -39,9 +41,20 @@ public class Game {
 
         for (int i = 0; i < numberOfPlayers; i++) {
             System.out.println("\nHello player " + (i + 1) + " What is your name?: ");
+
+
             Scanner nameScanner = new Scanner(System.in);
-            String chosenName = nameScanner.nextLine();
-            Scanner pieceScanner = new Scanner(System.in);
+            String chosenName;
+
+            do {
+                chosenName = nameScanner.nextLine().trim();
+
+                if (chosenName.equals("")){
+                    System.out.println("\nPlease enter a valid name containing characters.");
+                }
+            } while(chosenName.equals(""));
+
+
             System.out.println("\nPlease select a piece:");
 
 
@@ -55,7 +68,7 @@ public class Game {
             int chosenPieceIndex;
 
             do {
-                chosenPieceIndex = pieceScanner.nextInt();
+                chosenPieceIndex = validateIntegerInput();
                 if(chosenPieceIndex >= 1 && chosenPieceIndex <= 4 && !pieces_val[chosenPieceIndex - 1]){
                     System.out.println("\nSorry but that piece is already taken. Please select another piece: ");
                 }
@@ -93,7 +106,7 @@ public class Game {
 
             if (!currentPlayer.getMiss_turn() && currentPlayer.getPlayerStillIn()) {
 
-                System.out.println("\nHello " + currentPlayer.getName() + "! It is your turn :)");
+                System.out.println("\nHello " + currentPlayer.getName() + "! It is your turn :)\nBalance: " + currentPlayer.getMoney());
 
                 int spaces = dice.roll();
 
@@ -107,9 +120,8 @@ public class Game {
                     do {
 
                         System.out.println("Would you like to draw from the deck? Enter:\n'1' for YES\n'2' for NO\n");
-                        Scanner drawCardScanner = new Scanner(System.in);
 
-                        drawCardChoice = drawCardScanner.nextInt();
+                        drawCardChoice = validateIntegerInput();
 
                         if (drawCardChoice != 1 && drawCardChoice != 2){
                             System.out.println("\nPlease enter a valid input, either 1 or 2: ");
@@ -123,12 +135,15 @@ public class Game {
 
                         int cardMoney = cards.getCard(scenarioIndex);
 
-                        if (scenarioIndex < maxPositiveScenarioIndex) {
+                        if (scenarioIndex < maxPositiveScenarioIndex)
+                        {
                             currentPlayer.addMoney(cardMoney);
                         }
                         else {
                             currentPlayer.takeMoney(cardMoney);
                         }
+                        System.out.println("\nBalance: " + currentPlayer.getMoney());
+
                     }
                 }
 
@@ -197,28 +212,34 @@ public class Game {
 
     public void playerOptions() {
 
-        boolean validateMoney = animalInstance.validateMoney(animalArray, currentPlayer);
+        int numberOfUpgradeableAnimals = animalInstance.validateUpgrade(currentPlayer);
 
-            if (currentPlayer.getNumberOfUpgradableProperties() > 0 && validateMoney) {
-                System.out.println("\nOptions:\n'1' to UPGRADE ANIMAL\n'2' to END TURN");
+        if (numberOfUpgradeableAnimals > 0) {
+            System.out.println("\nOptions:\n'1' to UPGRADE ANIMAL\n'2' to END TURN");
 
-                int choice;
-                do {
-                    Scanner optionsChoice = new Scanner(System.in);
-                    choice = optionsChoice.nextInt();
-                } while (choice != 1 && choice != 2);
 
-                if (choice == 1) {
-                    animalInstance.upgradeAnimal(currentPlayer);
-                    playerOptions();
+            int choice;
+            do {
+                choice = validateIntegerInput();
+
+                if (choice != 1 && choice != 2)
+                {
+                    System.out.println("\nPlease enter either 1 or 2: ");
                 }
+            } while (choice != 1 && choice != 2);
+
+            if (choice == 1) {
+                animalInstance.upgradeAnimal(currentPlayer);
+                playerOptions();
             }
+        }
 
 
         else
         {
             Scanner enter = new Scanner(System.in);
-            System.out.println("Press 'ENTER' to end turn: ");
+
+            System.out.println("\nYou cannot upgrade any animals :( Press 'ENTER' to end turn: ");
             enter.nextLine();
         }
     }
@@ -227,42 +248,32 @@ public class Game {
 
         Animals currentAnimal = animals[location];
 
-        if (currentAnimal.level == 1)
-        {
-            rent = currentAnimal.L1;
-        }
-        else if (currentAnimal.level == 2)
-        {
-            rent = currentAnimal.L2;
-        }
-        else if (currentAnimal.level == 3)
-        {
-            rent = currentAnimal.L3;
-        }
-        else if (currentAnimal.level == 4)
-        {
-            rent = currentAnimal.L4;
-        }
-        else if (currentAnimal.level == 5)
-        {
-            rent = currentAnimal.L5;
-        }
-        else if (currentAnimal.level == 6)
-        {
-            rent = currentAnimal.L6;
+        switch (currentAnimal.level) {
+            case 1 -> rent = currentAnimal.L1;
+            case 2 -> rent = currentAnimal.L2;
+            case 3 -> rent = currentAnimal.L3;
+            case 4 -> rent = currentAnimal.L4;
+            case 5 -> rent = currentAnimal.L5;
+            case 6 -> rent = currentAnimal.L6;
         }
 
+        sound.PlayAnimalSound(currentAnimal.soundFile);
 
         if (currentAnimal.owner == null && player.getMoney() >= animals[location].price) {
 
             int cost = currentAnimal.price;
 
             System.out.println("Would you like to purchase a " + currentAnimal.name + " for " + cost + "$?\n'1' for YES \n'2' for NO");
-            Scanner purchaseChoice = new Scanner(System.in);
             int choice;
 
             do {
-                choice = purchaseChoice.nextInt();
+                choice = validateIntegerInput();
+
+                if (choice != 1 && choice != 2)
+                {
+                    System.out.println("\nPlease enter either 1 or 2: ");
+
+                }
             }while (choice != 1 && choice != 2);
 
 
@@ -271,6 +282,7 @@ public class Game {
                 player.takeMoney(currentAnimal.price);
                 System.out.println(player.getName() + " purchased " + currentAnimal.name + " for " + cost + " dollars.");
                 player.setNumberOfProperties(1);
+                System.out.println("\nBalance: " + currentPlayer.getMoney());
             }
         }
 
@@ -286,8 +298,10 @@ public class Game {
 
         else if (currentAnimal.owner != null && !currentAnimal.owner.equals(player.getName()))
         {
-            System.out.println("You landed on " + currentAnimal.owner + "'s animal! You paid " + currentAnimal.price + "$!");
+            System.out.println("You landed on " + currentAnimal.owner + "'s animal! You paid " + rent + "$!");
             player.takeMoney(rent);
+            System.out.println("\nBalance: " + currentPlayer.getMoney());
+
 
             for (int x = 0; x < numberOfPlayers;x++){
                 if (Objects.equals(players[x].getName(), currentAnimal.owner))
@@ -297,6 +311,23 @@ public class Game {
             }
         }
 
+    }
+    //add parameter taking max and min number to check whether number is between a certain range
+    public int validateIntegerInput() {
+        int integer;
+
+        Scanner scanner = new Scanner(System.in);
+        String userInput = scanner.nextLine();
+
+        try {
+            integer = Integer.parseInt(userInput);
+            return integer;
+        }
+        catch (NumberFormatException e) {
+            System.out.println("\n" + userInput + " is not an integer. Please enter an integer: ");
+            integer = validateIntegerInput();
+            return integer;
+        }
     }
 
 }

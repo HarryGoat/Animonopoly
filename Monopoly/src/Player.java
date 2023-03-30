@@ -10,6 +10,7 @@ public class Player {
     public char getPiece(){
         return piece;
     }
+
     public void setNumberOfProperties(int plusOrMinus){
         numberOfUpgradableProperties += plusOrMinus;
     }
@@ -30,6 +31,7 @@ public class Player {
     public String getName() {
         return name;
     }
+
     public int getMoney() {
         return money;
     }
@@ -37,12 +39,15 @@ public class Player {
     public int getLocation() {
         return location;
     }
+
     public boolean getMiss_turn() {
         return miss_turn;
     }
+
     public void setMiss_turn(boolean miss_turn) {
         this.miss_turn = miss_turn;
     }
+
     public void moveSpaces(int spaces) {
         int maxBoardSpaces = 25;
         this.location = this.location + spaces;
@@ -54,9 +59,9 @@ public class Player {
     public int isBankrupt (int number_of_players){
         if (this.money <= 0)
         {
-            number_of_players -= 1;
             System.out.println(this.name + " you have run out of money :( You are out!\n");
             this.playerStillIn = false;
+            number_of_players -= 1;
         }
 
         return number_of_players;

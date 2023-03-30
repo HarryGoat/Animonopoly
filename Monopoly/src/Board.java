@@ -1,35 +1,38 @@
 public class Board {
     public void draw(Player[] player, int numberOfPlayers) {
 
+        final String GREEN = "\033[0;32m";
+        final String RESET = "\033[0m";
+
         int[] positions = {391,407,422,439,455,471,487,503,1023,1543,2063,2453,3103,3623,3607,3591,3575
                 ,3559,3543,3527,3511,2991,2471,1951,1431,911};
         String board = """
                 _________________________________________________________________________________________________________________________________
-                |     Start     |     Worm     |     Dragon     |      Fly      |  Stick insect |      Fox      |     Badger    |      Cat      |
+                |     Start     |     Worm     |      Fly       | Stick insect  |      Fox      |     Badger    |      Cat      |      Cow      |
                 |               |              |                |               |               |               |               |               |
                 |               |              |                |               |               |               |               |               |
                 |_______________|______________|________________|_______________|_______________|_______________|_______________|_______________|
-                |    Chimera    |                                                                                               |      Cow      |
+                |    Dragon     |                                                                                               |     Sheep     |
                 |               |                                                                                               |               |
                 |               |                                                                                               |               |
                 |_______________|                                                                                               |_______________|
-                |    Phoenix    |                                                                                               |     Sheep     |
+                |    Phoenix    |                                                                                               |     Horse     |
                 |               |                                                                                               |               |
                 |               |                                                                                               |               |
                 |_______________|                                                                                               |_______________|
-                | Tyrannosaurus |                                                                                               |     Horse     |
+                |    Chimera    |                                                                                               |   Chimpanzee  |
                 |               |                                                                                               |               |
                 |               |                                                                                               |               |
                 |_______________|                                                                                               |_______________|
-                |  Stegosaurus  |                                                                                               |   Chimpanzee  |
+                | Tyrannosaurus |                                                                                               |   Orangutan   |
                 |               |                                                                                               |               |
                 |               |                                                                                               |               |
                 |_______________|                                                                                               |_______________|
-                |  Triceratops  |                                                                                               |   Orangutan   |
+                |  Stegosaurus  |                                                                                               |    Gorilla    |
                 |               |                                                                                               |               |
                 |               |                                                                                               |               |
                 |_______________|_______________________________________________________________________________________________|_______________|
-                |     Lion      |     Tiger     |     Jaguar    | Killer Whale  |  Great White  |  Tiger Shark  |    Gorilla    |   Miss a go   |
+                |  Triceratops  |     Lion      |     Tiger     |    Jaguar     | Killer Whale  |  Great White  |  Tiger Shark  |   Miss a go   |
                 |               |               |               |               |               |               |               |               |
                 |               |               |               |               |               |               |               |               |
                 |_______________|_______________|_______________|_______________|_______________|_______________|_______________|_______________|
@@ -40,6 +43,6 @@ public class Board {
             temp[positions[player[i].getLocation()]+i] = player[i].getPiece();
         }
         String out = new String(temp);
-        System.out.println(out);
+        System.out.println(GREEN + out + RESET);
     }
 }

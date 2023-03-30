@@ -1,6 +1,5 @@
 import java.util.Scanner;
 
-
 public class Dice {
 
     public static int dice1;
@@ -30,5 +29,3 @@ public class Dice {
         return dice2;
     }
 }
-
-
